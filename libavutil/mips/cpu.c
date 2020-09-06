@@ -30,49 +30,6 @@
 
 #if defined __linux__ || defined __ANDROID__
 
-#define HWCAP_LOONGSON_CPUCFG (1 << 14)
-
-static int cpucfg_available(void)
-{
-    return ff_getauxval(AT_HWCAP) & HWCAP_LOONGSON_CPUCFG;
-}
-
-/* Most toolchains have no CPUCFG support yet */
-static uint32_t read_cpucfg(uint32_t reg)
-{
-        uint32_t __res;
-
-        __asm__ __volatile__(
-                "parse_r __res,%0\n\t"
-                "parse_r reg,%1\n\t"
-                ".insn \n\t"
-                ".word (0xc8080118 | (reg << 21) | (__res << 11))\n\t"
-                :"=r"(__res)
-                :"r"(reg)
-                :
-                );
-        return __res;
-}
-
-#define LOONGSON_CFG1 0x1
-
-#define LOONGSON_CFG1_MMI    (1 << 4)
-#define LOONGSON_CFG1_MSA1   (1 << 5)
-
-static int cpu_flags_cpucfg(void)
-{
-    int flags = 0;
-    uint32_t cfg1 = read_cpucfg(LOONGSON_CFG1);
-
-    if (cfg1 & LOONGSON_CFG1_MMI)
-        flags |= AV_CPU_FLAG_MMI;
-
-    if (cfg1 & LOONGSON_CFG1_MSA1)
-        flags |= AV_CPU_FLAG_MSA;
-
-    return flags;
-}
-
 static int cpu_flags_cpuinfo(void)
 {
     FILE *f = fopen("/proc/cpuinfo", "r");
@@ -106,10 +63,7 @@ static int cpu_flags_cpuinfo(void)
 int ff_get_cpu_flags_mips(void)
 {
 #if defined __linux__ || defined __ANDROID__
-    if (cpucfg_available())
-        return cpu_flags_cpucfg();
-    else
-        return cpu_flags_cpuinfo();
+    return cpu_flags_cpuinfo();
 #else
     /* Assume no SIMD ASE supported */
     return 0;
