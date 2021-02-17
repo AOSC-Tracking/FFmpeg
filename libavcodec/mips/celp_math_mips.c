@@ -56,7 +56,7 @@
 #include "libavutil/mips/asmdefs.h"
 
 #if HAVE_INLINE_ASM
-#if !HAVE_MIPS32R6 && !HAVE_MIPS64R6
+#if HAVE_MIPSMADD
 static float ff_dot_productf_mips(const float* a, const float* b,
                                               int length)
 {
@@ -81,13 +81,13 @@ static float ff_dot_productf_mips(const float* a, const float* b,
     );
     return sum;
 }
-#endif /* !HAVE_MIPS32R6 && !HAVE_MIPS64R6 */
+#endif /* HAVE_MIPSMADD */
 #endif /* HAVE_INLINE_ASM */
 
 void ff_celp_math_init_mips(CELPMContext *c)
 {
 #if HAVE_INLINE_ASM
-#if !HAVE_MIPS32R6 && !HAVE_MIPS64R6
+#if HAVE_MIPSMADD
     c->dot_productf = ff_dot_productf_mips;
 #endif
 #endif

@@ -66,7 +66,7 @@
 #include "libavcodec/aacenc_utils.h"
 
 #if HAVE_INLINE_ASM
-#if !HAVE_MIPS32R6 && !HAVE_MIPS64R6
+#if HAVE_MIPSMADD
 typedef struct BandCodingPath {
     int prev_idx;
     float cost;
@@ -2478,12 +2478,12 @@ static void search_for_ms_mips(AACEncContext *s, ChannelElement *cpe)
 
 #include "libavcodec/aaccoder_trellis.h"
 
-#endif /* !HAVE_MIPS32R6 && !HAVE_MIPS64R6 */
+#endif /* HAVE_MIPSMADD */
 #endif /* HAVE_INLINE_ASM */
 
 void ff_aac_coder_init_mips(AACEncContext *c) {
 #if HAVE_INLINE_ASM
-#if !HAVE_MIPS32R6 && !HAVE_MIPS64R6
+#if HAVE_MIPSMADD
     AACCoefficientsEncoder *e = c->coder;
     int option = c->options.coder;
 
@@ -2497,6 +2497,6 @@ void ff_aac_coder_init_mips(AACEncContext *c) {
 #if HAVE_MIPSFPU
     e->search_for_ms            = search_for_ms_mips;
 #endif /* HAVE_MIPSFPU */
-#endif /* !HAVE_MIPS32R6 && !HAVE_MIPS64R6 */
+#endif /* HAVE_MIPSMADD */
 #endif /* HAVE_INLINE_ASM */
 }

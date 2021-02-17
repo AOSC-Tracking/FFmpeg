@@ -56,7 +56,7 @@
 #include "libavcodec/iirfilter.h"
 
 #if HAVE_INLINE_ASM
-#if !HAVE_MIPS32R6 && !HAVE_MIPS64R6
+#if HAVE_MIPSMADD
 typedef struct FFIIRFilterCoeffs {
     int   order;
     float gain;
@@ -197,13 +197,13 @@ static void iir_filter_flt_mips(const struct FFIIRFilterCoeffs *c,
         }
     }
 }
-#endif /* !HAVE_MIPS32R6 && !HAVE_MIPS64R6 */
+#endif /* HAVE_MIPSMADD */
 #endif /* HAVE_INLINE_ASM */
 
 void ff_iir_filter_init_mips(FFIIRFilterContext *f) {
 #if HAVE_INLINE_ASM
-#if !HAVE_MIPS32R6 && !HAVE_MIPS64R6
+#if HAVE_MIPSMADD
     f->filter_flt = iir_filter_flt_mips;
-#endif /* !HAVE_MIPS32R6 && !HAVE_MIPS64R6 */
+#endif /* HAVE_MIPSMADD */
 #endif /* HAVE_INLINE_ASM */
 }
