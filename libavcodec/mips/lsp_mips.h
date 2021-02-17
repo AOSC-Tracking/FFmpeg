@@ -57,7 +57,7 @@
 #include "config.h"
 
 #if HAVE_MIPSFPU && HAVE_INLINE_ASM
-#if !HAVE_MIPS32R6 && !HAVE_MIPS64R6
+#if HAVE_MIPSMADD
 #include "libavutil/attributes.h"
 #include "libavutil/mips/asmdefs.h"
 
@@ -111,6 +111,6 @@ static av_always_inline void lsp2polyf_mips(const double *lsp, double *f, int lp
     }
 }
 #define lsp2polyf lsp2polyf_mips
-#endif /* !HAVE_MIPS32R6 && !HAVE_MIPS64R6 */
+#endif /* HAVE_MIPSMADD */
 #endif /* HAVE_MIPSFPU && HAVE_INLINE_ASM */
 #endif /* AVCODEC_MIPS_LSP_MIPS_H */

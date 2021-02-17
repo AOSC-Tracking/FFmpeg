@@ -58,7 +58,7 @@
 #include "libavutil/mips/asmdefs.h"
 
 #if HAVE_INLINE_ASM
-#if !HAVE_MIPS32R6 && !HAVE_MIPS64R6
+#if HAVE_MIPSMADD
 static void compute_antialias_mips_float(MPADecodeContext *s,
                                         GranuleDef *g)
 {
@@ -180,7 +180,7 @@ static void compute_antialias_mips_float(MPADecodeContext *s,
     );
 }
 #define compute_antialias compute_antialias_mips_float
-#endif /* !HAVE_MIPS32R6 && !HAVE_MIPS64R6 */
+#endif /* HAVE_MIPSMADD */
 #endif /* HAVE_INLINE_ASM */
 
 #endif /* AVCODEC_MIPS_COMPUTE_ANTIALIAS_FLOAT_H */

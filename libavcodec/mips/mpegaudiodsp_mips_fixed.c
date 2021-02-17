@@ -59,7 +59,7 @@
 #include "libavcodec/mpegaudiodsp.h"
 
 #if HAVE_INLINE_ASM
-#if !HAVE_MIPS32R6 && !HAVE_MIPS64R6
+#if HAVE_MIPSMADD
 
 static void ff_mpadsp_apply_window_mips_fixed(int32_t *synth_buf, int32_t *window,
                                int *dither_state, int16_t *samples, ptrdiff_t incr)
@@ -905,13 +905,13 @@ static void ff_imdct36_blocks_mips_fixed(int *out, int *buf, int *in,
     }
 }
 
-#endif /* !HAVE_MIPS32R6 && !HAVE_MIPS64R6 */
+#endif /* HAVE_MIPSMADD */
 #endif /* HAVE_INLINE_ASM */
 
 void ff_mpadsp_init_mipsdsp(MPADSPContext *s)
 {
 #if HAVE_INLINE_ASM
-#if !HAVE_MIPS32R6 && !HAVE_MIPS64R6
+#if HAVE_MIPSMADD
     s->apply_window_fixed   = ff_mpadsp_apply_window_mips_fixed;
     s->imdct36_blocks_fixed = ff_imdct36_blocks_mips_fixed;
 #endif

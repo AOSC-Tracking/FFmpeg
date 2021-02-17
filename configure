@@ -473,6 +473,7 @@ Optimization options (experts only):
   --disable-lsx            disable Loongson LSX optimizations
   --disable-lasx           disable Loongson LASX optimizations
   --disable-rvv            disable RISC-V Vector optimizations
+  --disable-mipsmadd       disable MIPS MADD optimizations
   --disable-fast-unaligned consider unaligned accesses slow
 
 Developer options (useful when working on FFmpeg itself):
@@ -2174,6 +2175,7 @@ ARCH_EXT_LIST_MIPS="
     mips64r6
     mipsdsp
     mipsdspr2
+    mipsmadd
     msa
 "
 
@@ -2768,6 +2770,8 @@ mips64r6_deps="mips"
 mipsfpu_deps="mips"
 mipsdsp_deps="mips"
 mipsdspr2_deps="mips"
+mipsmadd_deps="mipsfpu"
+mmi_deps_any="loongson2 loongson3"
 msa_deps="mipsfpu"
 
 x86_64_select="i686"
@@ -6294,6 +6298,7 @@ elif enabled mips; then
 
     enabled mipsfpu && check_inline_asm mipsfpu '"cvt.d.l $f0, $f2"'
     enabled mipsfpu && (enabled mips32r5 || enabled mips32r6 || enabled mips64r6) && check_inline_asm_flags mipsfpu '"cvt.d.l $f0, $f1"' '-mfp64'
+    enabled mipsfpu && enabled mipsmadd && check_inline_asm mipsmadd '"madd.s $f1,$f1,$f6,$f7"'
 
     enabled mipsdsp && check_inline_asm_flags mipsdsp '"addu.qb $t0, $t1, $t2"' '-mdsp'
     enabled mipsdspr2 && check_inline_asm_flags mipsdspr2 '"absq_s.qb $t0, $t1"' '-mdspr2'
@@ -7887,6 +7892,7 @@ if enabled mips; then
     echo "MIPS FPU enabled          ${mipsfpu-no}"
     echo "MIPS DSP R1 enabled       ${mipsdsp-no}"
     echo "MIPS DSP R2 enabled       ${mipsdspr2-no}"
+    echo "MIPS MADD enabled         ${mipsmadd-no}"
     echo "MIPS MSA enabled          ${msa-no}"
     echo "LOONGSON MMI enabled      ${mmi-no}"
 fi
