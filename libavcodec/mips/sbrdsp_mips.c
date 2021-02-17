@@ -166,7 +166,7 @@ static void sbr_qmf_post_shuffle_mips(float W[32][2], const float *z)
     );
 }
 
-#if !HAVE_MIPS32R6 && !HAVE_MIPS64R6
+#if HAVE_MIPSMADD
 static void sbr_sum64x5_mips(float *z)
 {
     int k;
@@ -884,7 +884,7 @@ static void sbr_hf_apply_noise_3_mips(float (*Y)[2], const float *s_m,
        phi_sign = -phi_sign;
     }
 }
-#endif /* !HAVE_MIPS32R6 && !HAVE_MIPS64R6 */
+#endif /* HAVE_MIPSMADD */
 #endif /* HAVE_MIPSFPU */
 #endif /* HAVE_INLINE_ASM */
 
@@ -894,7 +894,7 @@ void ff_sbrdsp_init_mips(SBRDSPContext *s)
 #if HAVE_MIPSFPU
     s->qmf_pre_shuffle = sbr_qmf_pre_shuffle_mips;
     s->qmf_post_shuffle = sbr_qmf_post_shuffle_mips;
-#if !HAVE_MIPS32R6 && !HAVE_MIPS64R6
+#if HAVE_MIPSMADD
     s->sum64x5 = sbr_sum64x5_mips;
     s->sum_square = sbr_sum_square_mips;
     s->qmf_deint_bfly = sbr_qmf_deint_bfly_mips;
@@ -906,7 +906,7 @@ void ff_sbrdsp_init_mips(SBRDSPContext *s)
     s->hf_apply_noise[1] = sbr_hf_apply_noise_1_mips;
     s->hf_apply_noise[2] = sbr_hf_apply_noise_2_mips;
     s->hf_apply_noise[3] = sbr_hf_apply_noise_3_mips;
-#endif /* !HAVE_MIPS32R6 && !HAVE_MIPS64R6 */
+#endif /* HAVE_MIPSMADD */
 #endif /* HAVE_MIPSFPU */
 #endif /* HAVE_INLINE_ASM */
 }
