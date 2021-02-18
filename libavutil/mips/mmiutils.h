@@ -27,78 +27,107 @@
 #include "config.h"
 #include "libavutil/mips/asmdefs.h"
 
+/* 
+ * These were used to define temporary registers for MMI marcos
+ * however now we're using $at. They're theoretically unnecessary
+ * but just leave them here to avoid mess.
+ */
+#define DECLARE_VAR_LOW32
+#define RESTRICT_ASM_LOW32
+#define DECLARE_VAR_ALL64
+#define RESTRICT_ASM_ALL64
+#define DECLARE_VAR_ADDRT
+#define RESTRICT_ASM_ADDRT
+
 #if HAVE_LOONGSON2
 
-#define DECLARE_VAR_LOW32       int32_t low32
-#define RESTRICT_ASM_LOW32      [low32]"=&r"(low32),
-#define DECLARE_VAR_ALL64       int64_t all64
-#define RESTRICT_ASM_ALL64      [all64]"=&r"(all64),
-#define DECLARE_VAR_ADDRT       mips_reg addrt
-#define RESTRICT_ASM_ADDRT      [addrt]"=&r"(addrt),
-
 #define MMI_LWX(reg, addr, stride, bias)                                    \
-    PTR_ADDU    "%[addrt],  "#addr",    "#stride"                   \n\t"   \
-    "lw         "#reg",     "#bias"(%[addrt])                       \n\t"
+    ".set noat                                                 \n\t"   \
+    PTR_ADDU    "$at,  "#addr",    "#stride"                   \n\t"   \
+    "lw         "#reg",     "#bias"($at)                       \n\t"   \
+    ".set at                                                   \n\t"
 
 #define MMI_SWX(reg, addr, stride, bias)                                    \
-    PTR_ADDU    "%[addrt],  "#addr",    "#stride"                   \n\t"   \
-    "sw         "#reg",     "#bias"(%[addrt])                       \n\t"
+    ".set noat                                                 \n\t"   \
+    PTR_ADDU    "$at,  "#addr",    "#stride"                   \n\t"   \
+    "sw         "#reg",     "#bias"($at)                       \n\t"   \
+    ".set at                                                   \n\t"
 
 #define MMI_LDX(reg, addr, stride, bias)                                    \
-    PTR_ADDU    "%[addrt],  "#addr",    "#stride"                   \n\t"   \
-    "ld         "#reg",     "#bias"(%[addrt])                       \n\t"
+    ".set noat                                                 \n\t"   \
+    PTR_ADDU    "$at,  "#addr",    "#stride"                   \n\t"   \
+    "ld         "#reg",     "#bias"($at)                       \n\t"   \
+    ".set at                                                   \n\t"
 
 #define MMI_SDX(reg, addr, stride, bias)                                    \
-    PTR_ADDU    "%[addrt],  "#addr",    "#stride"                   \n\t"   \
-    "sd         "#reg",     "#bias"(%[addrt])                       \n\t"
+    ".set noat                                                 \n\t"   \
+    PTR_ADDU    "$at,  "#addr",    "#stride"                   \n\t"   \
+    "sd         "#reg",     "#bias"($at)                       \n\t"   \
+    ".set at                                                   \n\t"
 
 #define MMI_LWC1(fp, addr, bias)                                            \
     "lwc1       "#fp",      "#bias"("#addr")                        \n\t"
 
 #define MMI_LWLRC1(fp, addr, bias, off)                                     \
-    "lwl        %[low32],   "#bias"+"#off"("#addr")                 \n\t"   \
-    "lwr        %[low32],   "#bias"("#addr")                        \n\t"   \
-    "mtc1       %[low32],   "#fp"                                   \n\t"
+    ".set noat                                                 \n\t"   \
+    "lwl        $at,   "#bias"+"#off"("#addr")                 \n\t"   \
+    "lwr        $at,   "#bias"("#addr")                        \n\t"   \
+    "mtc1       $at,   "#fp"                                   \n\t"   \
+    ".set at                                                   \n\t"
 
 #define MMI_LWXC1(fp, addr, stride, bias)                                   \
-    PTR_ADDU    "%[addrt],  "#addr",    "#stride"                   \n\t"   \
-    MMI_LWC1(fp, %[addrt], bias)
+    ".set noat                                                 \n\t"   \
+    PTR_ADDU    "$at,  "#addr",    "#stride"                   \n\t"   \
+    MMI_LWC1(fp, $at, bias)                                            \
+    ".set at                                                   \n\t"
 
 #define MMI_SWC1(fp, addr, bias)                                            \
     "swc1       "#fp",      "#bias"("#addr")                        \n\t"
 
 #define MMI_SWLRC1(fp, addr, bias, off)                                           \
-    "mfc1       %[low32],   "#fp"                                   \n\t"   \
-    "swl        %[low32],   "#bias"+"#off"("#addr")                 \n\t"   \
-    "swr        %[low32],   "#bias"("#addr")                        \n\t"
+    ".set noat                                                 \n\t"   \
+    "mfc1       $at,   "#fp"                                   \n\t"   \
+    "swl        $at,   "#bias"+"#off"("#addr")                 \n\t"   \
+    "swr        $at,   "#bias"("#addr")                        \n\t"   \
+    ".set at                                                   \n\t"
 
 #define MMI_SWXC1(fp, addr, stride, bias)                                   \
-    PTR_ADDU    "%[addrt],  "#addr",    "#stride"                   \n\t"   \
-    MMI_SWC1(fp, %[addrt], bias)
+    ".set noat                                                 \n\t"   \
+    PTR_ADDU    "$at,  "#addr",    "#stride"                   \n\t"   \
+    MMI_SWC1(fp, $at, bias)                                           \
+    ".set at                                                   \n\t"
 
 #define MMI_LDC1(fp, addr, bias)                                            \
     "ldc1       "#fp",      "#bias"("#addr")                        \n\t"
 
 #define MMI_LDLRC1(fp, addr, bias, off)                                     \
-    "ldl        %[all64],   "#bias"+"#off"("#addr")                 \n\t"   \
-    "ldr        %[all64],   "#bias"("#addr")                        \n\t"   \
-    "dmtc1      %[all64],   "#fp"                                   \n\t"
+    ".set noat                                                 \n\t"   \
+    "ldl        $at,   "#bias"+"#off"("#addr")                 \n\t"   \
+    "ldr        $at,   "#bias"("#addr")                        \n\t"   \
+    "dmtc1      $at,   "#fp"                                   \n\t"   \
+    ".set at                                                   \n\t"
 
 #define MMI_LDXC1(fp, addr, stride, bias)                                   \
-    PTR_ADDU    "%[addrt],  "#addr",    "#stride"                   \n\t"   \
-    MMI_LDC1(fp, %[addrt], bias)
+    ".set noat                                                 \n\t"   \
+    PTR_ADDU    "$at,  "#addr",    "#stride"                   \n\t"   \
+    MMI_LDC1(fp, $at, bias)                                           \
+    ".set at                                                   \n\t"
 
 #define MMI_SDC1(fp, addr, bias)                                            \
     "sdc1       "#fp",      "#bias"("#addr")                        \n\t"
 
 #define MMI_SDLRC1(fp, addr, bias, off)                                           \
-    "dmfc1      %[all64],   "#fp"                                   \n\t"   \
-    "sdl        %[all64],   "#bias"+"#off"("#addr")                 \n\t"   \
-    "sdr        %[all64],   "#bias"("#addr")                        \n\t"
+    ".set noat                                                 \n\t"   \
+    "dmfc1      $at,   "#fp"                                   \n\t"   \
+    "sdl        $at,   "#bias"+"#off"("#addr")                 \n\t"   \
+    "sdr        $at,   "#bias"("#addr")                        \n\t"   \
+    ".set at                                                   \n\t"
 
 #define MMI_SDXC1(fp, addr, stride, bias)                                   \
-    PTR_ADDU    "%[addrt],  "#addr",    "#stride"                   \n\t"   \
-    MMI_SDC1(fp, %[addrt], bias)
+    ".set noat                                                 \n\t"   \
+    PTR_ADDU    "$at,  "#addr",    "#stride"                   \n\t"   \
+    MMI_SDC1(fp, $at, bias)                                            \
+    ".set at                                                   \n\t"
 
 #define MMI_LQ(reg1, reg2, addr, bias)                                      \
     "ld         "#reg1",    "#bias"("#addr")                        \n\t"   \
@@ -118,11 +147,6 @@
 
 #elif HAVE_LOONGSON3 /* !HAVE_LOONGSON2 */
 
-#define DECLARE_VAR_ALL64
-#define RESTRICT_ASM_ALL64
-#define DECLARE_VAR_ADDRT
-#define RESTRICT_ASM_ADDRT
-
 #define MMI_LWX(reg, addr, stride, bias)                                    \
     "gslwx      "#reg",     "#bias"("#addr", "#stride")             \n\t"
 
@@ -140,13 +164,12 @@
 
 #if _MIPS_SIM == _ABIO32 /* workaround for 3A2000 gslwlc1 bug */
 
-#define DECLARE_VAR_LOW32       int32_t low32
-#define RESTRICT_ASM_LOW32      [low32]"=&r"(low32),
-
 #define MMI_LWLRC1(fp, addr, bias, off)                                     \
-    "lwl        %[low32],   "#bias"+"#off"("#addr")                 \n\t"   \
-    "lwr        %[low32],   "#bias"("#addr")                        \n\t"   \
-    "mtc1       %[low32],   "#fp"                                      \n\t"
+    ".set noat                                                 \n\t"   \
+    "lwl        $at,   "#bias"+"#off"("#addr")                 \n\t"   \
+    "lwr        $at,   "#bias"("#addr")                        \n\t"   \
+    "mtc1       $at,   "#fp"                                   \n\t"   \
+    ".set at                                                   \n\t"
 
 #else /* _MIPS_SIM != _ABIO32 */
 
