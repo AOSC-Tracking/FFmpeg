@@ -55,8 +55,9 @@
 #define MMI_LWC1(fp, addr, bias)                                            \
     "lwc1       "#fp",      "#bias"("#addr")                        \n\t"
 
-#define MMI_ULWC1(fp, addr, bias)                                           \
-    "ulw        %[low32],   "#bias"("#addr")                        \n\t"   \
+#define MMI_LWLRC1(fp, addr, bias, off)                                     \
+    "lwl        %[low32],   "#bias"+"#off"("#addr")                 \n\t"   \
+    "lwr        %[low32],   "#bias"("#addr")                        \n\t"   \
     "mtc1       %[low32],   "#fp"                                   \n\t"
 
 #define MMI_LWXC1(fp, addr, stride, bias)                                   \
@@ -66,9 +67,10 @@
 #define MMI_SWC1(fp, addr, bias)                                            \
     "swc1       "#fp",      "#bias"("#addr")                        \n\t"
 
-#define MMI_USWC1(fp, addr, bias)                                           \
+#define MMI_SWLRC1(fp, addr, bias, off)                                           \
     "mfc1       %[low32],   "#fp"                                   \n\t"   \
-    "usw        %[low32],   "#bias"("#addr")                        \n\t"
+    "swl        %[low32],   "#bias"+"#off"("#addr")                 \n\t"   \
+    "swr        %[low32],   "#bias"("#addr")                        \n\t"
 
 #define MMI_SWXC1(fp, addr, stride, bias)                                   \
     PTR_ADDU    "%[addrt],  "#addr",    "#stride"                   \n\t"   \
@@ -77,8 +79,9 @@
 #define MMI_LDC1(fp, addr, bias)                                            \
     "ldc1       "#fp",      "#bias"("#addr")                        \n\t"
 
-#define MMI_ULDC1(fp, addr, bias)                                           \
-    "uld        %[all64],   "#bias"("#addr")                        \n\t"   \
+#define MMI_LDLRC1(fp, addr, bias, off)                                     \
+    "ldl        %[all64],   "#bias"+"#off"("#addr")                 \n\t"   \
+    "ldr        %[all64],   "#bias"("#addr")                        \n\t"   \
     "dmtc1      %[all64],   "#fp"                                   \n\t"
 
 #define MMI_LDXC1(fp, addr, stride, bias)                                   \
@@ -88,9 +91,10 @@
 #define MMI_SDC1(fp, addr, bias)                                            \
     "sdc1       "#fp",      "#bias"("#addr")                        \n\t"
 
-#define MMI_USDC1(fp, addr, bias)                                           \
+#define MMI_SDLRC1(fp, addr, bias, off)                                           \
     "dmfc1      %[all64],   "#fp"                                   \n\t"   \
-    "usd        %[all64],   "#bias"("#addr")                        \n\t"
+    "sdl        %[all64],   "#bias"+"#off"("#addr")                 \n\t"   \
+    "sdr        %[all64],   "#bias"("#addr")                        \n\t"
 
 #define MMI_SDXC1(fp, addr, stride, bias)                                   \
     PTR_ADDU    "%[addrt],  "#addr",    "#stride"                   \n\t"   \
@@ -139,17 +143,18 @@
 #define DECLARE_VAR_LOW32       int32_t low32
 #define RESTRICT_ASM_LOW32      [low32]"=&r"(low32),
 
-#define MMI_ULWC1(fp, addr, bias)                                           \
-    "ulw        %[low32],   "#bias"("#addr")                        \n\t"   \
-    "mtc1       %[low32],   "#fp"                                   \n\t"
+#define MMI_LWLRC1(fp, addr, bias, off)                                     \
+    "lwl        %[low32],   "#bias"+"#off"("#addr")                 \n\t"   \
+    "lwr        %[low32],   "#bias"("#addr")                        \n\t"   \
+    "mtc1       %[low32],   "#fp"                                      \n\t"
 
 #else /* _MIPS_SIM != _ABIO32 */
 
 #define DECLARE_VAR_LOW32
 #define RESTRICT_ASM_LOW32
 
-#define MMI_ULWC1(fp, addr, bias)                                           \
-    "gslwlc1    "#fp",    3+"#bias"("#addr")                        \n\t"   \
+#define MMI_LWLRC1(fp, addr, bias, off)                                     \
+    "gslwlc1    "#fp",      "#off"+"#bias"("#addr")                 \n\t"   \
     "gslwrc1    "#fp",      "#bias"("#addr")                        \n\t"
 
 #endif /* _MIPS_SIM != _ABIO32 */
@@ -160,8 +165,8 @@
 #define MMI_SWC1(fp, addr, bias)                                            \
     "swc1       "#fp",      "#bias"("#addr")                        \n\t"
 
-#define MMI_USWC1(fp, addr, bias)                                           \
-    "gsswlc1    "#fp",    3+"#bias"("#addr")                        \n\t"   \
+#define MMI_SWLRC1(fp, addr, bias, off)                                     \
+    "gsswlc1    "#fp",      "#off"+"#bias"("#addr")                 \n\t"   \
     "gsswrc1    "#fp",      "#bias"("#addr")                        \n\t"
 
 #define MMI_SWXC1(fp, addr, stride, bias)                                   \
@@ -170,8 +175,8 @@
 #define MMI_LDC1(fp, addr, bias)                                            \
     "ldc1       "#fp",      "#bias"("#addr")                        \n\t"
 
-#define MMI_ULDC1(fp, addr, bias)                                           \
-    "gsldlc1    "#fp",    7+"#bias"("#addr")                        \n\t"   \
+#define MMI_LDLRC1(fp, addr, bias, off)                                     \
+    "gsldlc1    "#fp",      "#off"+"#bias"("#addr")                 \n\t"   \
     "gsldrc1    "#fp",      "#bias"("#addr")                        \n\t"
 
 #define MMI_LDXC1(fp, addr, stride, bias)                                   \
@@ -180,8 +185,8 @@
 #define MMI_SDC1(fp, addr, bias)                                            \
     "sdc1       "#fp",      "#bias"("#addr")                        \n\t"
 
-#define MMI_USDC1(fp, addr, bias)                                           \
-    "gssdlc1    "#fp",    7+"#bias"("#addr")                        \n\t"   \
+#define MMI_SDLRC1(fp, addr, bias, off)                                           \
+    "gssdlc1    "#fp",      "#off"+"#bias"("#addr")                 \n\t"   \
     "gssdrc1    "#fp",      "#bias"("#addr")                        \n\t"
 
 #define MMI_SDXC1(fp, addr, stride, bias)                                   \
@@ -200,6 +205,12 @@
     "gssqc1     "#fp1",     "#fp2",     "#bias"("#addr")            \n\t"
 
 #endif /* HAVE_LOONGSON2 */
+
+#define MMI_ULWC1(fp, addr, bias) MMI_LWLRC1(fp, addr, bias, 3)
+#define MMI_USWC1(fp, addr, bias) MMI_SWLRC1(fp, addr, bias, 3)
+
+#define MMI_ULDC1(fp, addr, bias) MMI_LDLRC1(fp, addr, bias, 7)
+#define MMI_USDC1(fp, addr, bias) MMI_SDLRC1(fp, addr, bias, 7)
 
 /**
  * Backup saved registers
