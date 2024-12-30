@@ -47,7 +47,7 @@ void ff_hevc_put_hevc_qpel_h##w##_8_mmi(int16_t *dst, const uint8_t *_src, \
         "punpcklbh    %[ftmp1],      %[ftmp0],      %[ftmp1]    \n\t"    \
         "psrah        %[ftmp1],      %[ftmp1],      %[ftmp0]    \n\t"    \
         "psrah        %[ftmp2],      %[ftmp2],      %[ftmp0]    \n\t"    \
-        "pxor         %[ftmp0],      %[ftmp0],      %[ftmp0]    \n\t"    \
+        "xor          %[ftmp0],      %[ftmp0],      %[ftmp0]    \n\t"    \
                                                                          \
         "1:                                                     \n\t"    \
         "2:                                                     \n\t"    \
@@ -145,7 +145,7 @@ void ff_hevc_put_hevc_qpel_hv##w##_8_mmi(int16_t *dst, const uint8_t *_src,\
         "punpcklbh    %[ftmp1],      %[ftmp0],      %[ftmp1]    \n\t"    \
         "psrah        %[ftmp1],      %[ftmp1],      %[ftmp0]    \n\t"    \
         "psrah        %[ftmp2],      %[ftmp2],      %[ftmp0]    \n\t"    \
-        "pxor         %[ftmp0],      %[ftmp0],      %[ftmp0]    \n\t"    \
+        "xor          %[ftmp0],      %[ftmp0],      %[ftmp0]    \n\t"    \
                                                                          \
         "1:                                                     \n\t"    \
         "2:                                                     \n\t"    \
@@ -334,7 +334,7 @@ void ff_hevc_put_hevc_qpel_bi_h##w##_8_mmi(uint8_t *_dst,               \
         "punpcklbh    %[ftmp1],      %[ftmp0],      %[ftmp1]    \n\t"   \
         "psrah        %[ftmp1],      %[ftmp1],      %[ftmp0]    \n\t"   \
         "psrah        %[ftmp2],      %[ftmp2],      %[ftmp0]    \n\t"   \
-        "pxor         %[ftmp0],      %[ftmp0],      %[ftmp0]    \n\t"   \
+        "xor          %[ftmp0],      %[ftmp0],      %[ftmp0]    \n\t"   \
         "punpcklhw    %[offset],     %[offset],     %[offset]   \n\t"   \
         "punpcklwd    %[offset],     %[offset],     %[offset]   \n\t"   \
                                                                         \
@@ -388,7 +388,7 @@ void ff_hevc_put_hevc_qpel_bi_h##w##_8_mmi(uint8_t *_dst,               \
         "psraw        %[ftmp6],      %[ftmp6],      %[shift]    \n\t"   \
         "packsswh     %[ftmp5],      %[ftmp5],      %[ftmp6]    \n\t"   \
         "pcmpgth      %[ftmp7],      %[ftmp5],      %[ftmp0]    \n\t"   \
-        "pand         %[ftmp3],      %[ftmp5],      %[ftmp7]    \n\t"   \
+        "and          %[ftmp3],      %[ftmp5],      %[ftmp7]    \n\t"   \
         "packushb     %[ftmp3],      %[ftmp3],      %[ftmp3]    \n\t"   \
         MMI_USWC1(%[ftmp3], %[dst], 0x00)                               \
                                                                         \
@@ -469,7 +469,7 @@ void ff_hevc_put_hevc_qpel_bi_hv##w##_8_mmi(uint8_t *_dst,              \
         "punpcklbh    %[ftmp1],      %[ftmp0],      %[ftmp1]    \n\t"   \
         "psrah        %[ftmp1],      %[ftmp1],      %[ftmp0]    \n\t"   \
         "psrah        %[ftmp2],      %[ftmp2],      %[ftmp0]    \n\t"   \
-        "pxor         %[ftmp0],      %[ftmp0],      %[ftmp0]    \n\t"   \
+        "xor          %[ftmp0],      %[ftmp0],      %[ftmp0]    \n\t"   \
                                                                         \
         "1:                                                     \n\t"   \
         "2:                                                     \n\t"   \
@@ -588,7 +588,7 @@ void ff_hevc_put_hevc_qpel_bi_hv##w##_8_mmi(uint8_t *_dst,              \
         "psraw        %[ftmp5],      %[ftmp5],      %[ftmp0]    \n\t"   \
         "packsswh     %[ftmp3],      %[ftmp3],      %[ftmp5]    \n\t"   \
         MMI_ULDC1(%[ftmp4], %[src2], 0x00)                              \
-        "pxor         %[ftmp7],      %[ftmp7],      %[ftmp7]    \n\t"   \
+        "xor          %[ftmp7],      %[ftmp7],      %[ftmp7]    \n\t"   \
         "li           %[rtmp0],      0x10                       \n\t"   \
         "dmtc1        %[rtmp0],      %[ftmp8]                   \n\t"   \
         "punpcklhw    %[ftmp5],      %[ftmp7],      %[ftmp3]    \n\t"   \
@@ -607,7 +607,7 @@ void ff_hevc_put_hevc_qpel_bi_hv##w##_8_mmi(uint8_t *_dst,              \
         "psraw        %[ftmp6],      %[ftmp6],      %[shift]    \n\t"   \
         "packsswh     %[ftmp5],      %[ftmp5],      %[ftmp6]    \n\t"   \
         "pcmpgth      %[ftmp7],      %[ftmp5],      %[ftmp7]    \n\t"   \
-        "pand         %[ftmp3],      %[ftmp5],      %[ftmp7]    \n\t"   \
+        "and          %[ftmp3],      %[ftmp5],      %[ftmp7]    \n\t"   \
         "packushb     %[ftmp3],      %[ftmp3],      %[ftmp3]    \n\t"   \
         MMI_USWC1(%[ftmp3], %[dst], 0x00)                               \
                                                                         \
@@ -686,7 +686,7 @@ void ff_hevc_put_hevc_epel_bi_hv##w##_8_mmi(uint8_t *_dst,              \
         "dmtc1        %[rtmp0],      %[ftmp0]                   \n\t"   \
         "punpcklbh    %[ftmp1],      %[ftmp0],      %[ftmp1]    \n\t"   \
         "psrah        %[ftmp1],      %[ftmp1],      %[ftmp0]    \n\t"   \
-        "pxor         %[ftmp0],      %[ftmp0],      %[ftmp0]    \n\t"   \
+        "xor          %[ftmp0],      %[ftmp0],      %[ftmp0]    \n\t"   \
                                                                         \
         "1:                                                     \n\t"   \
         "2:                                                     \n\t"   \
@@ -747,7 +747,7 @@ void ff_hevc_put_hevc_epel_bi_hv##w##_8_mmi(uint8_t *_dst,              \
         "li           %[rtmp0],      0x06                       \n\t"   \
         "dmtc1        %[rtmp0],      %[ftmp0]                   \n\t"   \
         "punpcklwd    %[offset],     %[offset],     %[offset]   \n\t"   \
-        "pxor         %[ftmp2],      %[ftmp2],      %[ftmp2]    \n\t"   \
+        "xor          %[ftmp2],      %[ftmp2],      %[ftmp2]    \n\t"   \
                                                                         \
         "1:                                                     \n\t"   \
         "li           %[x],        " #x_step "                  \n\t"   \
@@ -792,7 +792,7 @@ void ff_hevc_put_hevc_epel_bi_hv##w##_8_mmi(uint8_t *_dst,              \
         "psraw        %[ftmp6],      %[ftmp6],      %[shift]    \n\t"   \
         "packsswh     %[ftmp5],      %[ftmp5],      %[ftmp6]    \n\t"   \
         "pcmpgth      %[ftmp7],      %[ftmp5],      %[ftmp2]    \n\t"   \
-        "pand         %[ftmp3],      %[ftmp5],      %[ftmp7]    \n\t"   \
+        "and          %[ftmp3],      %[ftmp5],      %[ftmp7]    \n\t"   \
         "packushb     %[ftmp3],      %[ftmp3],      %[ftmp3]    \n\t"   \
         MMI_USWC1(%[ftmp3], %[dst], 0x0)                                \
                                                                         \
@@ -855,7 +855,7 @@ void ff_hevc_put_hevc_pel_bi_pixels##w##_8_mmi(uint8_t *_dst,             \
     y = height;                                                           \
     x = width >> 3;                                                       \
     __asm__ volatile(                                                     \
-        "pxor         %[ftmp0],      %[ftmp0],      %[ftmp0]    \n\t"     \
+        "xor          %[ftmp0],      %[ftmp0],      %[ftmp0]    \n\t"     \
         "li           %[rtmp0],      0x06                       \n\t"     \
         "dmtc1        %[rtmp0],      %[ftmp1]                   \n\t"     \
         "li           %[rtmp0],      0x10                       \n\t"     \
@@ -900,8 +900,8 @@ void ff_hevc_put_hevc_pel_bi_pixels##w##_8_mmi(uint8_t *_dst,             \
         "packsswh     %[ftmp4],      %[ftmp4],      %[ftmp5]    \n\t"     \
         "pcmpgth      %[ftmp3],      %[ftmp2],      %[ftmp0]    \n\t"     \
         "pcmpgth      %[ftmp5],      %[ftmp4],      %[ftmp0]    \n\t"     \
-        "pand         %[ftmp2],      %[ftmp2],      %[ftmp3]    \n\t"     \
-        "pand         %[ftmp4],      %[ftmp4],      %[ftmp5]    \n\t"     \
+        "and          %[ftmp2],      %[ftmp2],      %[ftmp3]    \n\t"     \
+        "and          %[ftmp4],      %[ftmp4],      %[ftmp5]    \n\t"     \
         "packushb     %[ftmp2],      %[ftmp2],      %[ftmp4]    \n\t"     \
         MMI_USDC1(%[ftmp2], %[dst], 0x0)                                  \
                                                                           \
@@ -980,7 +980,7 @@ void ff_hevc_put_hevc_qpel_uni_hv##w##_8_mmi(uint8_t *_dst,             \
         "punpcklbh    %[ftmp1],      %[ftmp0],      %[ftmp1]    \n\t"   \
         "psrah        %[ftmp1],      %[ftmp1],      %[ftmp0]    \n\t"   \
         "psrah        %[ftmp2],      %[ftmp2],      %[ftmp0]    \n\t"   \
-        "pxor         %[ftmp0],      %[ftmp0],      %[ftmp0]    \n\t"   \
+        "xor          %[ftmp0],      %[ftmp0],      %[ftmp0]    \n\t"   \
                                                                         \
         "1:                                                     \n\t"   \
         "2:                                                     \n\t"   \
@@ -1101,9 +1101,9 @@ void ff_hevc_put_hevc_qpel_uni_hv##w##_8_mmi(uint8_t *_dst,             \
         "packsswh     %[ftmp3],      %[ftmp3],      %[ftmp5]    \n\t"   \
         "paddh        %[ftmp3],      %[ftmp3],      %[offset]   \n\t"   \
         "psrah        %[ftmp3],      %[ftmp3],      %[shift]    \n\t"   \
-        "pxor         %[ftmp7],      %[ftmp7],      %[ftmp7]    \n\t"   \
+        "xor          %[ftmp7],      %[ftmp7],      %[ftmp7]    \n\t"   \
         "pcmpgth      %[ftmp7],      %[ftmp3],      %[ftmp7]    \n\t"   \
-        "pand         %[ftmp3],      %[ftmp3],      %[ftmp7]    \n\t"   \
+        "and          %[ftmp3],      %[ftmp3],      %[ftmp7]    \n\t"   \
         "packushb     %[ftmp3],      %[ftmp3],      %[ftmp3]    \n\t"   \
         MMI_USWC1(%[ftmp3], %[dst], 0x00)                               \
                                                                         \

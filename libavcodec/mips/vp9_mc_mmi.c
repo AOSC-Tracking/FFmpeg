@@ -83,7 +83,7 @@ static void convolve_horiz_mmi(const uint8_t *src, int32_t src_stride,
     dst_stride -= w;
     __asm__ volatile (
         "move       %[tmp1],    %[width]                   \n\t"
-        "pxor       %[ftmp0],   %[ftmp0],    %[ftmp0]      \n\t"
+        "xor        %[ftmp0],   %[ftmp0],    %[ftmp0]      \n\t"
         MMI_ULDC1(%[filter1], %[filter], 0x00)
         MMI_ULDC1(%[filter2], %[filter], 0x08)
         "li         %[tmp0],    0x07                       \n\t"
@@ -154,7 +154,7 @@ static void convolve_vert_mmi(const uint8_t *src, int32_t src_stride,
     dst_stride -= w;
 
     __asm__ volatile (
-        "pxor       %[ftmp0],    %[ftmp0],   %[ftmp0]      \n\t"
+        "xor        %[ftmp0],    %[ftmp0],   %[ftmp0]      \n\t"
         MMI_ULDC1(%[ftmp4], %[filter], 0x00)
         MMI_ULDC1(%[ftmp5], %[filter], 0x08)
         "punpcklwd  %[filter10], %[ftmp4],   %[ftmp4]      \n\t"
@@ -242,7 +242,7 @@ static void convolve_avg_horiz_mmi(const uint8_t *src, int32_t src_stride,
 
     __asm__ volatile (
         "move       %[tmp1],    %[width]                   \n\t"
-        "pxor       %[ftmp0],   %[ftmp0],    %[ftmp0]      \n\t"
+        "xor        %[ftmp0],   %[ftmp0],    %[ftmp0]      \n\t"
         MMI_ULDC1(%[filter1], %[filter], 0x00)
         MMI_ULDC1(%[filter2], %[filter], 0x08)
         "li         %[tmp0],    0x07                       \n\t"
@@ -323,7 +323,7 @@ static void convolve_avg_vert_mmi(const uint8_t *src, int32_t src_stride,
     dst_stride -= w;
 
     __asm__ volatile (
-        "pxor       %[ftmp0],    %[ftmp0],   %[ftmp0]      \n\t"
+        "xor        %[ftmp0],    %[ftmp0],   %[ftmp0]      \n\t"
         MMI_ULDC1(%[ftmp4], %[filter], 0x00)
         MMI_ULDC1(%[ftmp5], %[filter], 0x08)
         "punpcklwd  %[filter10], %[ftmp4],   %[ftmp4]      \n\t"
@@ -419,7 +419,7 @@ static void convolve_avg_mmi(const uint8_t *src, int32_t src_stride,
 
     __asm__ volatile (
         "move       %[tmp1],    %[width]                  \n\t"
-        "pxor       %[ftmp0],   %[ftmp0],   %[ftmp0]      \n\t"
+        "xor        %[ftmp0],   %[ftmp0],   %[ftmp0]      \n\t"
         "li         %[tmp0],    0x10001                   \n\t"
         "dmtc1      %[tmp0],    %[ftmp3]                  \n\t"
         "punpcklhw  %[ftmp3],   %[ftmp3],   %[ftmp3]      \n\t"
