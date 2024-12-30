@@ -37,16 +37,16 @@ void ff_denoise_dct_mmi(MpegEncContext *s, int16_t *block)
     s->dct_count[intra]++;
 
     __asm__ volatile(
-        "pxor       %[ftmp0],   %[ftmp0],       %[ftmp0]                \n\t"
+        "xor        %[ftmp0],   %[ftmp0],       %[ftmp0]                \n\t"
         "1:                                                             \n\t"
         MMI_LDC1(%[ftmp1], %[block], 0x00)
-        "pxor       %[ftmp2],   %[ftmp2],       %[ftmp2]                \n\t"
+        "xor        %[ftmp2],   %[ftmp2],       %[ftmp2]                \n\t"
         MMI_LDC1(%[ftmp3], %[block], 0x08)
-        "pxor       %[ftmp4],   %[ftmp4],       %[ftmp4]                \n\t"
+        "xor        %[ftmp4],   %[ftmp4],       %[ftmp4]                \n\t"
         "pcmpgth    %[ftmp2],   %[ftmp2],       %[ftmp1]                \n\t"
         "pcmpgth    %[ftmp4],   %[ftmp4],       %[ftmp3]                \n\t"
-        "pxor       %[ftmp1],   %[ftmp1],       %[ftmp2]                \n\t"
-        "pxor       %[ftmp3],   %[ftmp3],       %[ftmp4]                \n\t"
+        "xor        %[ftmp1],   %[ftmp1],       %[ftmp2]                \n\t"
+        "xor        %[ftmp3],   %[ftmp3],       %[ftmp4]                \n\t"
         "psubh      %[ftmp1],   %[ftmp1],       %[ftmp2]                \n\t"
         "psubh      %[ftmp3],   %[ftmp3],       %[ftmp4]                \n\t"
         MMI_LDC1(%[ftmp6], %[offset], 0x00)
@@ -55,8 +55,8 @@ void ff_denoise_dct_mmi(MpegEncContext *s, int16_t *block)
         MMI_LDC1(%[ftmp6], %[offset], 0x08)
         "mov.d      %[ftmp7],   %[ftmp3]                                \n\t"
         "psubush    %[ftmp3],   %[ftmp3],       %[ftmp6]                \n\t"
-        "pxor       %[ftmp1],   %[ftmp1],       %[ftmp2]                \n\t"
-        "pxor       %[ftmp3],   %[ftmp3],       %[ftmp4]                \n\t"
+        "xor        %[ftmp1],   %[ftmp1],       %[ftmp2]                \n\t"
+        "xor        %[ftmp3],   %[ftmp3],       %[ftmp4]                \n\t"
         "psubh      %[ftmp1],   %[ftmp1],       %[ftmp2]                \n\t"
         "psubh      %[ftmp3],   %[ftmp3],       %[ftmp4]                \n\t"
         MMI_SDC1(%[ftmp1], %[block], 0x00)

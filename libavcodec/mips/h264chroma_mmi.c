@@ -75,7 +75,7 @@ void ff_put_h264_chroma_mc8_mmi(uint8_t *dst, const uint8_t *src, ptrdiff_t stri
         A.i = 64 - D.i - B.i - C.i;
 
         __asm__ volatile (
-            "pxor       %[ftmp0],   %[ftmp0],       %[ftmp0]           \n\t"
+            "xor        %[ftmp0],   %[ftmp0],       %[ftmp0]           \n\t"
             "pshufh     %[A],       %[A],           %[ftmp0]           \n\t"
             "pshufh     %[B],       %[B],           %[ftmp0]           \n\t"
             "mtc1       %[tmp0],    %[ftmp9]                           \n\t"
@@ -175,7 +175,7 @@ void ff_put_h264_chroma_mc8_mmi(uint8_t *dst, const uint8_t *src, ptrdiff_t stri
         A.i = 64 - E.i;
 
         __asm__ volatile (
-            "pxor       %[ftmp0],   %[ftmp0],       %[ftmp0]           \n\t"
+            "xor        %[ftmp0],   %[ftmp0],       %[ftmp0]           \n\t"
             "pshufh     %[A],       %[A],           %[ftmp0]           \n\t"
             "pshufh     %[E],       %[E],           %[ftmp0]           \n\t"
             "mtc1       %[tmp0],    %[ftmp7]                           \n\t"
@@ -223,7 +223,7 @@ void ff_put_h264_chroma_mc8_mmi(uint8_t *dst, const uint8_t *src, ptrdiff_t stri
         A.i = 64 - E.i;
 
         __asm__ volatile (
-            "pxor       %[ftmp0],   %[ftmp0],       %[ftmp0]           \n\t"
+            "xor        %[ftmp0],   %[ftmp0],       %[ftmp0]           \n\t"
             "pshufh     %[A],       %[A],           %[ftmp0]           \n\t"
             "pshufh     %[E],       %[E],           %[ftmp0]           \n\t"
             "mtc1       %[tmp0],    %[ftmp7]                           \n\t"
@@ -333,7 +333,7 @@ void ff_avg_h264_chroma_mc8_mmi(uint8_t *dst, const uint8_t *src, ptrdiff_t stri
         C.i = (y << 3) - D.i;
         A.i = 64 - D.i - B.i - C.i;
         __asm__ volatile (
-            "pxor       %[ftmp0],   %[ftmp0],       %[ftmp0]       \n\t"
+            "xor        %[ftmp0],   %[ftmp0],       %[ftmp0]       \n\t"
             "pshufh     %[A],       %[A],           %[ftmp0]       \n\t"
             "pshufh     %[B],       %[B],           %[ftmp0]       \n\t"
             "mtc1       %[tmp0],    %[ftmp9]                       \n\t"
@@ -401,7 +401,7 @@ void ff_avg_h264_chroma_mc8_mmi(uint8_t *dst, const uint8_t *src, ptrdiff_t stri
         E.i = x << 3;
         A.i = 64 - E.i;
         __asm__ volatile (
-            "pxor       %[ftmp0],   %[ftmp0],       %[ftmp0]       \n\t"
+            "xor        %[ftmp0],   %[ftmp0],       %[ftmp0]       \n\t"
             "pshufh     %[A],       %[A],           %[ftmp0]       \n\t"
             "pshufh     %[E],       %[E],           %[ftmp0]       \n\t"
             "mtc1       %[tmp0],    %[ftmp7]                       \n\t"
@@ -450,7 +450,7 @@ void ff_avg_h264_chroma_mc8_mmi(uint8_t *dst, const uint8_t *src, ptrdiff_t stri
         E.i = y << 3;
         A.i = 64 - E.i;
         __asm__ volatile (
-            "pxor       %[ftmp0],   %[ftmp0],       %[ftmp0]       \n\t"
+            "xor        %[ftmp0],   %[ftmp0],       %[ftmp0]       \n\t"
             "pshufh     %[A],       %[A],           %[ftmp0]       \n\t"
             "pshufh     %[E],       %[E],           %[ftmp0]       \n\t"
             "mtc1       %[tmp0],    %[ftmp7]                       \n\t"
@@ -512,7 +512,7 @@ void ff_put_h264_chroma_mc4_mmi(uint8_t *dst, const uint8_t *src, ptrdiff_t stri
 
     if (D.i) {
         __asm__ volatile (
-            "pxor       %[ftmp0],   %[ftmp0],       %[ftmp0]            \n\t"
+            "xor        %[ftmp0],   %[ftmp0],       %[ftmp0]            \n\t"
             "pshufh     %[A],       %[A],           %[ftmp0]            \n\t"
             "pshufh     %[B],       %[B],           %[ftmp0]            \n\t"
             "mtc1       %[tmp0],    %[ftmp7]                            \n\t"
@@ -561,7 +561,7 @@ void ff_put_h264_chroma_mc4_mmi(uint8_t *dst, const uint8_t *src, ptrdiff_t stri
     } else if (E.i) {
         const int step = C.i ? stride : 1;
         __asm__ volatile (
-            "pxor       %[ftmp0],   %[ftmp0],       %[ftmp0]            \n\t"
+            "xor        %[ftmp0],   %[ftmp0],       %[ftmp0]            \n\t"
             "pshufh     %[A],       %[A],           %[ftmp0]            \n\t"
             "pshufh     %[E],       %[E],           %[ftmp0]            \n\t"
             "mtc1       %[tmp0],    %[ftmp5]                            \n\t"
@@ -633,7 +633,7 @@ void ff_avg_h264_chroma_mc4_mmi(uint8_t *dst, const uint8_t *src, ptrdiff_t stri
 
     if (D.i) {
         __asm__ volatile (
-            "pxor       %[ftmp0],   %[ftmp0],       %[ftmp0]            \n\t"
+            "xor        %[ftmp0],   %[ftmp0],       %[ftmp0]            \n\t"
             "pshufh     %[A],       %[A],           %[ftmp0]            \n\t"
             "pshufh     %[B],       %[B],           %[ftmp0]            \n\t"
             "mtc1       %[tmp0],    %[ftmp7]                            \n\t"
@@ -684,7 +684,7 @@ void ff_avg_h264_chroma_mc4_mmi(uint8_t *dst, const uint8_t *src, ptrdiff_t stri
     } else if (E.i) {
         const int step = C.i ? stride : 1;
         __asm__ volatile (
-            "pxor       %[ftmp0],   %[ftmp0],       %[ftmp0]            \n\t"
+            "xor        %[ftmp0],   %[ftmp0],       %[ftmp0]            \n\t"
             "pshufh     %[A],       %[A],           %[ftmp0]            \n\t"
             "pshufh     %[E],       %[E],           %[ftmp0]            \n\t"
             "mtc1       %[tmp0],    %[ftmp5]                            \n\t"

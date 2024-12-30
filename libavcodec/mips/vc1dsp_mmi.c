@@ -136,7 +136,7 @@ void ff_vc1_inv_trans_8x8_dc_mmi(uint8_t *dest, ptrdiff_t linesize, int16_t *blo
     dc_u.i = dc;
 
     __asm__ volatile(
-        "pxor       %[ftmp0],   %[ftmp0],       %[ftmp0]                \n\t"
+        "xor        %[ftmp0],   %[ftmp0],       %[ftmp0]                \n\t"
         "pshufh     %[dc],      %[dc],          %[ftmp0]                \n\t"
         "li         %[count],   0x02                                    \n\t"
 
@@ -426,7 +426,7 @@ void ff_vc1_inv_trans_8x4_dc_mmi(uint8_t *dest, ptrdiff_t linesize, int16_t *blo
     dc_u.i = dc;
 
     __asm__ volatile(
-        "pxor       %[ftmp0],   %[ftmp0],       %[ftmp0]                \n\t"
+        "xor        %[ftmp0],   %[ftmp0],       %[ftmp0]                \n\t"
         "pshufh     %[dc],      %[dc],          %[ftmp0]                \n\t"
 
         MMI_LDC1(%[ftmp1], %[dest0], 0x00)
@@ -704,7 +704,7 @@ void ff_vc1_inv_trans_8x4_mmi(uint8_t *dest, ptrdiff_t linesize, int16_t *block)
         MMI_LWC1(%[ftmp3], %[tmp0], 0x00)
         PTR_ADDU    "%[tmp0],   %[tmp0],    %[linesize]                 \n\t"
         MMI_LWC1(%[ftmp4], %[tmp0], 0x00)
-        "pxor       %[ftmp0],   %[ftmp0],   %[ftmp0]                    \n\t"
+        "xor        %[ftmp0],   %[ftmp0],   %[ftmp0]                    \n\t"
         "punpcklbh  %[ftmp1],   %[ftmp1],   %[ftmp0]                    \n\t"
         "punpcklbh  %[ftmp2],   %[ftmp2],   %[ftmp0]                    \n\t"
         "punpcklbh  %[ftmp3],   %[ftmp3],   %[ftmp0]                    \n\t"
@@ -828,7 +828,7 @@ void ff_vc1_inv_trans_8x4_mmi(uint8_t *dest, ptrdiff_t linesize, int16_t *block)
         MMI_LWC1(%[ftmp3], %[tmp0], 0x04)
         PTR_ADDU    "%[tmp0],   %[tmp0],    %[linesize]                 \n\t"
         MMI_LWC1(%[ftmp4], %[tmp0], 0x04)
-        "pxor       %[ftmp0],   %[ftmp0],   %[ftmp0]                    \n\t"
+        "xor        %[ftmp0],   %[ftmp0],   %[ftmp0]                    \n\t"
         "punpcklbh  %[ftmp1],   %[ftmp1],   %[ftmp0]                    \n\t"
         "punpcklbh  %[ftmp2],   %[ftmp2],   %[ftmp0]                    \n\t"
         "punpcklbh  %[ftmp3],   %[ftmp3],   %[ftmp0]                    \n\t"
@@ -878,7 +878,7 @@ void ff_vc1_inv_trans_4x8_dc_mmi(uint8_t *dest, ptrdiff_t linesize, int16_t *blo
     dc_u.i = dc;
 
     __asm__ volatile(
-        "pxor       %[ftmp0],   %[ftmp0],       %[ftmp0]                \n\t"
+        "xor        %[ftmp0],   %[ftmp0],       %[ftmp0]                \n\t"
         "pshufh     %[dc],      %[dc],          %[ftmp0]                \n\t"
 
         MMI_LWC1(%[ftmp1], %[dest0], 0x00)
@@ -1056,7 +1056,7 @@ void ff_vc1_inv_trans_4x8_mmi(uint8_t *dest, ptrdiff_t linesize, int16_t *block)
         MMI_LWC1(%[ftmp7], %[tmp0], 0x00)
         PTR_ADDU  "%[tmp0],   %[tmp0],    %[linesize]                 \n\t"
         MMI_LWC1(%[ftmp8], %[tmp0], 0x00)
-        "pxor       %[ftmp0],   %[ftmp0],   %[ftmp0]                    \n\t"
+        "xor        %[ftmp0],   %[ftmp0],   %[ftmp0]                    \n\t"
         "punpcklbh  %[ftmp1],   %[ftmp1],   %[ftmp0]                    \n\t"
         "punpcklbh  %[ftmp2],   %[ftmp2],   %[ftmp0]                    \n\t"
         "punpcklbh  %[ftmp3],   %[ftmp3],   %[ftmp0]                    \n\t"
@@ -1133,7 +1133,7 @@ void ff_vc1_inv_trans_4x4_dc_mmi(uint8_t *dest, ptrdiff_t linesize, int16_t *blo
     dc_u.i = dc;
 
     __asm__ volatile(
-        "pxor       %[ftmp0],   %[ftmp0],       %[ftmp0]                \n\t"
+        "xor        %[ftmp0],   %[ftmp0],       %[ftmp0]                \n\t"
         "pshufh     %[dc],      %[dc],          %[ftmp0]                \n\t"
 
         MMI_LWC1(%[ftmp1], %[dest0], 0x00)
@@ -1337,7 +1337,7 @@ void ff_vc1_inv_trans_4x4_mmi(uint8_t *dest, ptrdiff_t linesize, int16_t *block)
         MMI_LWC1(%[ftmp3], %[tmp0], 0x00)
         PTR_ADDU    "%[tmp0],   %[tmp0],    %[linesize]                 \n\t"
         MMI_LWC1(%[ftmp4], %[tmp0], 0x00)
-        "pxor       %[ftmp0],   %[ftmp0],   %[ftmp0]                    \n\t"
+        "xor        %[ftmp0],   %[ftmp0],   %[ftmp0]                    \n\t"
         "punpcklbh  %[ftmp1],   %[ftmp1],   %[ftmp0]                    \n\t"
         "punpcklbh  %[ftmp2],   %[ftmp2],   %[ftmp0]                    \n\t"
         "punpcklbh  %[ftmp3],   %[ftmp3],   %[ftmp0]                    \n\t"
@@ -1664,7 +1664,7 @@ static void vc1_put_ver_16b_shift2_mmi(int16_t *dst,
     shift_u.i = shift;
 
     __asm__ volatile(
-        "pxor       $f0,    $f0,    $f0             \n\t"
+        "xor        $f0,    $f0,    $f0             \n\t"
         "li         $8,     0x03                    \n\t"
         LOAD_ROUNDER_MMI("%[rnd]")
         "1:                                         \n\t"
@@ -1768,7 +1768,7 @@ static void OPNAME ## vc1_shift2_mmi(uint8_t *dst, const uint8_t *src,      \
     rnd = 8 - rnd;                                                          \
                                                                             \
     __asm__ volatile(                                                       \
-        "pxor       $f0,    $f0,    $f0             \n\t"                   \
+        "xor        $f0,    $f0,    $f0             \n\t"                   \
         "li         $10,    0x08                    \n\t"                   \
         LOAD_ROUNDER_MMI("%[rnd]")                                          \
         "1:                                         \n\t"                   \
@@ -1896,7 +1896,7 @@ vc1_put_ver_16b_ ## NAME ## _mmi(int16_t *dst, const uint8_t *src,          \
     src -= src_stride;                                                      \
                                                                             \
     __asm__ volatile(                                                       \
-        "pxor       $f0,    $f0,    $f0             \n\t"                   \
+        "xor        $f0,    $f0,    $f0             \n\t"                   \
         LOAD_ROUNDER_MMI("%[rnd]")                                          \
         ".p2align 3                                 \n\t"                   \
         "1:                                         \n\t"                   \
@@ -1969,7 +1969,7 @@ OPNAME ## vc1_hor_16b_ ## NAME ## _mmi(uint8_t *dst, mips_reg stride,       \
     rnd -= (-4+58+13-3)*256; /* Add -256 bias */                            \
                                                                             \
     __asm__ volatile(                                                       \
-        "pxor       $f0,    $f0,    $f0             \n\t"                   \
+        "xor        $f0,    $f0,    $f0             \n\t"                   \
         LOAD_ROUNDER_MMI("%[rnd]")                                          \
         ".p2align 3                                 \n\t"                   \
         "1:                                         \n\t"                   \
@@ -2017,7 +2017,7 @@ OPNAME ## vc1_## NAME ## _mmi(uint8_t *dst, const uint8_t *src,             \
     rnd = 32-rnd;                                                           \
                                                                             \
     __asm__ volatile (                                                      \
-        "pxor       $f0,    $f0,    $f0             \n\t"                   \
+        "xor        $f0,    $f0,    $f0             \n\t"                   \
         LOAD_ROUNDER_MMI("%[rnd]")                                          \
         ".p2align 3                                 \n\t"                   \
         "1:                                         \n\t"                   \
@@ -2252,7 +2252,7 @@ void ff_put_no_rnd_vc1_chroma_mc8_mmi(uint8_t *dst /* align 8 */,
 
     __asm__ volatile(
         "li         %[tmp0],    0x06                                    \n\t"
-        "pxor       %[ftmp0],   %[ftmp0],   %[ftmp0]                    \n\t"
+        "xor        %[ftmp0],   %[ftmp0],   %[ftmp0]                    \n\t"
         "mtc1       %[tmp0],    %[ftmp9]                                \n\t"
         "pshufh     %[A],       %[A],       %[ftmp0]                    \n\t"
         "pshufh     %[B],       %[B],       %[ftmp0]                    \n\t"
@@ -2308,7 +2308,7 @@ void ff_put_no_rnd_vc1_chroma_mc4_mmi(uint8_t *dst /* align 8 */,
 
     __asm__ volatile(
         "li         %[tmp0],    0x06                                    \n\t"
-        "pxor       %[ftmp0],   %[ftmp0],   %[ftmp0]                    \n\t"
+        "xor        %[ftmp0],   %[ftmp0],   %[ftmp0]                    \n\t"
         "mtc1       %[tmp0],    %[ftmp5]                                \n\t"
         "pshufh     %[A],       %[A],       %[ftmp0]                    \n\t"
         "pshufh     %[B],       %[B],       %[ftmp0]                    \n\t"
@@ -2362,7 +2362,7 @@ void ff_avg_no_rnd_vc1_chroma_mc8_mmi(uint8_t *dst /* align 8 */,
 
     __asm__ volatile(
         "li         %[tmp0],    0x06                                    \n\t"
-        "pxor       %[ftmp0],   %[ftmp0],   %[ftmp0]                    \n\t"
+        "xor        %[ftmp0],   %[ftmp0],   %[ftmp0]                    \n\t"
         "mtc1       %[tmp0],    %[ftmp9]                                \n\t"
         "pshufh     %[A],       %[A],       %[ftmp0]                    \n\t"
         "pshufh     %[B],       %[B],       %[ftmp0]                    \n\t"
@@ -2421,7 +2421,7 @@ void ff_avg_no_rnd_vc1_chroma_mc4_mmi(uint8_t *dst /* align 8 */,
 
     __asm__ volatile(
         "li         %[tmp0],    0x06                                    \n\t"
-        "pxor       %[ftmp0],   %[ftmp0],   %[ftmp0]                    \n\t"
+        "xor        %[ftmp0],   %[ftmp0],   %[ftmp0]                    \n\t"
         "mtc1       %[tmp0],    %[ftmp5]                                \n\t"
         "pshufh     %[A],       %[A],       %[ftmp0]                    \n\t"
         "pshufh     %[B],       %[B],       %[ftmp0]                    \n\t"
